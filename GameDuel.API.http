@@ -1,0 +1,6 @@
+@GameDuel.API_HostAddress = http://localhost:5008
+
+GET {{GameDuel.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
