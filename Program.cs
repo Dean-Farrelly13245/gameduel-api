@@ -1,4 +1,7 @@
 
+using GameDuel.API.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace GameDuel.API
 {
     public class Program
@@ -12,6 +15,11 @@ namespace GameDuel.API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.AddDbContext<GameDuelContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("GameDuelDb")));
+
+
 
             var app = builder.Build();
 
