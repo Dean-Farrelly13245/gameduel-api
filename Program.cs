@@ -14,16 +14,13 @@ namespace GameDuel.API
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<GameDuelContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("GameDuelDb")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("GameDuelDb")));
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
+            
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
