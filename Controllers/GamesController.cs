@@ -48,7 +48,20 @@ namespace GameDuel.API.Controllers
         {
             if (id != game.Id)
                 return BadRequest();
-            _context.Games.Update(game);
+
+            var existing = _context.Games.Find(id);
+            if (existing == null)
+                return NotFound();
+
+            existing.Title = game.Title;
+            existing.Genre = game.Genre;
+            existing.Platform = game.Platform;
+            existing.ReleaseYear = game.ReleaseYear;
+            existing.CoverImageUrl = game.CoverImageUrl;
+            existing.Description = game.Description;
+            existing.Wins = game.Wins;
+            existing.Losses = game.Losses;
+
             _context.SaveChanges();
             return NoContent();
         }
