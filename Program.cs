@@ -15,18 +15,11 @@ namespace GameDuel.API
                 options.UseNpgsql(builder.Configuration.GetConnectionString("GameDuelDb")));
 
             var app = builder.Build();
-
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
-
-            using (var scope = app.Services.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<GameDuelContext>();
-                await DataSeeder.SeedGames(context);
-            }
 
             await app.RunAsync();
         }
