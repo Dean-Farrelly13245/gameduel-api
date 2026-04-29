@@ -30,16 +30,21 @@ namespace GameDuel.API.Controllers
             var matchup = _context.Matchups.Find(id);
             if (matchup == null)
                 return NotFound();
+
             return Ok(matchup);
         }
 
         // POST /api/Matchups
         [HttpPost]
-        public IActionResult Create(Matchup matchup)
+        public IActionResult Create([FromBody] Matchup matchup)
         {
-            matchup.CreatedAt = DateTime.Now;
+            matchup.CreatedAt = DateTime.UtcNow;
+            matchup.VotedAt = null;
+            matchup.WinnerId = null;
+
             _context.Matchups.Add(matchup);
             _context.SaveChanges();
+
             return CreatedAtAction(nameof(GetById), new { id = matchup.Id }, matchup);
         }
 
@@ -52,7 +57,8 @@ namespace GameDuel.API.Controllers
                 return NotFound();
 
             matchup.WinnerId = winnerId;
-            matchup.VotedAt = DateTime.Now;
+            matchup.VotedAt = DateTime.UtcNow;
+
             var winner = _context.Games.Find(winnerId);
             var loserId = matchup.GameAId == winnerId ? matchup.GameBId : matchup.GameAId;
             var loser = _context.Games.Find(loserId);
@@ -71,6 +77,7 @@ namespace GameDuel.API.Controllers
             var matchup = _context.Matchups.Find(id);
             if (matchup == null)
                 return NotFound();
+
             _context.Matchups.Remove(matchup);
             _context.SaveChanges();
             return NoContent();
